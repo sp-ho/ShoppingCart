@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ShoppingCart.Models.Cart>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Subtotal ($)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cartItem in Model)
+        {
+            var subtotal = cartItem.Price * cartItem.Quantity;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => cartItem.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cartItem.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cartItem.Quantity)
+                </td>
+                <td>
+                    @subtotal
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@cartItem.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@cartItem.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@cartItem.Id">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@if (Model.Any())
+{
+    double totalPrice = 0;
+    foreach (var item in Model)
+    {
+        totalPrice += item.Price * item.Quantity;
+    }
+    <p>Total Price: $ @totalPrice</p>
+}
